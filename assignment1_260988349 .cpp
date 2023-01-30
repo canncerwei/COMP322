@@ -16,7 +16,8 @@ bool word_diff(string word1, string word2){
 bool classical_file_diff(string file1, string file2){
     ifstream f1(file1);
     ifstream f2(file2);
-    string word1, word2;
+    string word1;
+    string word2;
 
     while (f1 >> word1 && f2 >> word2) {
         if (!word_diff(word1, word2)) return false;

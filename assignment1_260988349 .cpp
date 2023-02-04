@@ -3,17 +3,22 @@
 #include <string>
 using namespace std;
 
+/* -------------------------- Function Declaration -------------------------- */
 bool word_diff(std::string word1, std::string word2);
 bool classical_file_diff(std::string file1, std::string file2);
 size_t hash_it (std::string someString);
 bool enhanced_file_diff(std::string file1, std::string file2);
 void list_mismatched_lines(std::string file1, std::string file2);
 void list_mismatched_words(std::string file1, std::string file2);
+void helper_mismatched_lines(ifstream& f1, ifstream& f2);
+/* -------------------------------------------------------------------------- */
 
+/* ----------------------------------- Q1 ----------------------------------- */
 bool word_diff(string word1, string word2){
     return (word1 == word2);
 }
 
+/* ----------------------------------- Q2 ----------------------------------- */
 bool classical_file_diff(string file1, string file2){
     ifstream f1(file1);
     ifstream f2(file2);
@@ -27,11 +32,13 @@ bool classical_file_diff(string file1, string file2){
     return true;
 }
 
-size_t hash_it (std::string someString){
+/* ----------------------------------- Q3 ----------------------------------- */
+size_t hash_it (string someString){
     return hash<string>{}(someString);
 }
 
-bool enhanced_file_diff(std::string file1, std::string file2){
+/* ----------------------------------- Q4 ----------------------------------- */
+bool enhanced_file_diff(string file1, string file2){
     ifstream f1(file1);
     ifstream f2(file2);
     string word1;
@@ -41,12 +48,51 @@ bool enhanced_file_diff(std::string file1, std::string file2){
         size_t hashed1 = hash_it(word1);
         size_t hashed2 = hash_it(word2);
         
-        if(hashed2-hashed1 != 0) return false;
+        if(hashed2 != hashed1) return false;
     }
 
     return true;
 }
 
+ /* --------------- Q5: need fix on get fname + line disparity --------------- */
+void helper_mismatched_lines(ifstream& f1, ifstream& f2){
+    string line1;
+    string line2;
+    
+
+
+    if(getline(f1,line1) && getline(f2,line2)){
+        size_t hashed1 = hash_it(line1);
+        size_t hashed2 = hash_it(line2);
+
+        if(hashed1 != hashed2){
+            cout << "file1.txt: " << line1 << endl;
+            cout << "file2.txt: " << line2 << endl;
+        }
+
+        
+    }else return;
+
+    helper_mismatched_lines(f1, f2);
+
+
+
+
+}
+void list_mismatched_lines(string file1, string file2){
+    if (enhanced_file_diff(file1,file2)) return;
+
+    ifstream f1(file1);
+    ifstream f2(file2);
+    
+
+    helper_mismatched_lines(f1,f2);
+}
+
+
+/* -------------------------------------------------------------------------- */
+/*                                    MAIN                                    */
+/* -------------------------------------------------------------------------- */
 int main(int argc, char const *argv[])
 {
     /* code */
@@ -91,5 +137,8 @@ int main(int argc, char const *argv[])
     result = enhanced_file_diff(file1, file3); // True
     std::cout << result << std::endl;
 
+    // Q5
+    std::cout << "-----------Testing Q5-----------:" << std::endl;
+    list_mismatched_lines(file1, file2);
     return 0;
 }

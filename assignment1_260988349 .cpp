@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <sstream>
 using namespace std;
 
 /* -------------------------- Function Declaration -------------------------- */
@@ -90,6 +91,36 @@ void list_mismatched_lines(string file1, string file2){
 }
 
 
+/* ----------------------------------- Q6 , need to make it recursive and hashing ----------------------------------- */
+ void list_mismatched_words(std::string file1, std::string file2){
+    ifstream f1(file1);
+    ifstream f2(file2);
+
+    string line1, line2;
+
+    string word1;
+    string word2;
+
+    string filename1 = file1.substr(file1.find_last_of("/\\") + 1);
+    string filename2 = file2.substr(file2.find_last_of("/\\") + 1);
+
+    int linenum = 1;
+
+    while (getline(f1,line1) && getline(f2,line2)){
+        istringstream iss1(line1), iss2(line2);
+        while (iss1 >> word1 && iss2 >> word2){
+            if (!word_diff(word1, word2)){
+                cout << filename1 << ": " << word1 << " (line " << linenum << ")" << endl;
+                cout << filename2 << ": " << word2 << " (line " << linenum << ")" << endl;
+            }  
+        }
+        linenum++;
+    }
+
+    return;
+ }   
+
+
 /* -------------------------------------------------------------------------- */
 /*                                    MAIN                                    */
 /* -------------------------------------------------------------------------- */
@@ -140,5 +171,8 @@ int main(int argc, char const *argv[])
     // Q5
     std::cout << "-----------Testing Q5-----------:" << std::endl;
     list_mismatched_lines(file1, file2);
-    return 0;
+    
+    // Q6
+    std::cout << "-----------Testing Q6-----------:" << std::endl;
+    list_mismatched_words(file1, file2);
 }

@@ -42,7 +42,7 @@ size_t hash_it (string someString){
 
 /* ----------------------------------- Q4 ----------------------------------- */
 
-// Helper
+// Helper: word diff using hashing
 bool hashed_word_diff(string word1, string word2){
     size_t hashed1 = hash_it(word1);
     size_t hashed2 = hash_it(word2);
@@ -64,8 +64,8 @@ bool enhanced_file_diff(string file1, string file2){
 
  /* --------------- Q5: need fix line disparity --------------- */
 
-//  Helper
-void helper_mismatched_lines(ifstream& f1, ifstream& f2, string file1, string file2){
+//  Recursive Helper
+void helper_mismatched_lines(ifstream &f1, ifstream &f2, string file1, string file2){
     string line1;
     string line2;
 
@@ -83,6 +83,19 @@ void helper_mismatched_lines(ifstream& f1, ifstream& f2, string file1, string fi
 
         helper_mismatched_lines(f1,f2,file1,file2);
         
+    } //LINE DISPARITY EDGE CASE:
+    else if (!line1.empty() || !line2.empty()) {
+        if (!line1.empty()) {
+            
+            cout << filename1 << ": " << line1 << endl;
+            cout << filename2 << ": " << endl;
+            
+        } else if (!line2.empty()) {
+            
+            cout << filename1 << ": " << endl;
+            cout << filename2 << ": " << line2 << endl;
+            
+        }
     }
 
 }
@@ -96,7 +109,7 @@ void list_mismatched_lines(string file1, string file2){
     ifstream f1(file1);
     ifstream f2(file2);
     
-
+    // call helper
     helper_mismatched_lines(f1,f2,file1,file2);
     
 }
@@ -104,10 +117,10 @@ void list_mismatched_lines(string file1, string file2){
 
 /* ----------------------------------- Q6 ----------------------------------- */
 
-//  Helper
+//  Recursive Helper
 void helper_mismatched_words(ifstream& f1, ifstream& f2, int linenum, string file1, string file2){
-    string line1;
-    string line2;
+    string line1,line2;
+    
 
     string word1,word2;
 

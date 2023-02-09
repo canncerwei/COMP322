@@ -12,6 +12,7 @@ bool enhanced_file_diff(std::string file1, std::string file2);
 void list_mismatched_lines(std::string file1, std::string file2);
 void list_mismatched_words(std::string file1, std::string file2);
 void helper_mismatched_lines(ifstream& f1, ifstream& f2);
+bool hashed_word_diff(string word1, string word2);
 /* -------------------------------------------------------------------------- */
 
 /* ----------------------------------- Q1 ----------------------------------- */
@@ -39,6 +40,14 @@ size_t hash_it (string someString){
 }
 
 /* ----------------------------------- Q4 ----------------------------------- */
+
+// Helper
+bool hashed_word_diff(string word1, string word2){
+    size_t hashed1 = hash_it(word1);
+    size_t hashed2 = hash_it(word2);
+
+    return (hashed1 == hashed2);
+}
 bool enhanced_file_diff(string file1, string file2){
     ifstream f1(file1);
     ifstream f2(file2);
@@ -46,10 +55,7 @@ bool enhanced_file_diff(string file1, string file2){
     string word2;
 
     while (f1 >> word1 && f2 >> word2) {
-        size_t hashed1 = hash_it(word1);
-        size_t hashed2 = hash_it(word2);
-        
-        if(hashed2 != hashed1) return false;
+        if (!hashed_word_diff(word1,word2)) return false;
     }
 
     return true;
@@ -63,10 +69,10 @@ void helper_mismatched_lines(ifstream& f1, ifstream& f2){
 
 
     if(getline(f1,line1) && getline(f2,line2)){
-        size_t hashed1 = hash_it(line1);
-        size_t hashed2 = hash_it(line2);
+        // size_t hashed1 = hash_it(line1);
+        // size_t hashed2 = hash_it(line2);
 
-        if(hashed1 != hashed2){
+        if(!hashed_word_diff(line1,line2)){
             cout << "file1.txt: " << line1 << endl;
             cout << "file2.txt: " << line2 << endl;
         }
@@ -91,7 +97,7 @@ void list_mismatched_lines(string file1, string file2){
 }
 
 
-/* ----------------------------------- Q6 , need to make it recursive and hashing ----------------------------------- */
+/* ----------------------------------- Q6 , need to make it recursive ----------------------------------- */
  void list_mismatched_words(std::string file1, std::string file2){
     ifstream f1(file1);
     ifstream f2(file2);
@@ -101,6 +107,7 @@ void list_mismatched_lines(string file1, string file2){
     string word1;
     string word2;
 
+    // Parsing filename to proper format
     string filename1 = file1.substr(file1.find_last_of("/\\") + 1);
     string filename2 = file2.substr(file2.find_last_of("/\\") + 1);
 
@@ -109,7 +116,7 @@ void list_mismatched_lines(string file1, string file2){
     while (getline(f1,line1) && getline(f2,line2)){
         istringstream iss1(line1), iss2(line2);
         while (iss1 >> word1 && iss2 >> word2){
-            if (!word_diff(word1, word2)){
+            if (!hashed_word_diff(word1,word2)){
                 cout << filename1 << ": " << word1 << " (line " << linenum << ")" << endl;
                 cout << filename2 << ": " << word2 << " (line " << linenum << ")" << endl;
             }  
@@ -140,7 +147,7 @@ int main(int argc, char const *argv[])
     std::cout << std::boolalpha << "false? " << result2 << std::endl;
 
     // Q2
-    std::string file1 = "./txt_folder/file1.txt";
+    std::string file1 = "./txt_folder/fileTest.txt";
     std::string file2 = "./txt_folder/file2.txt";
     std::string file3 = "./txt_folder/file1_copy.txt";
     bool result3 = classical_file_diff(file1, file2); //false

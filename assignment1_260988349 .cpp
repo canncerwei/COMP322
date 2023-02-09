@@ -61,31 +61,33 @@ bool enhanced_file_diff(string file1, string file2){
     return true;
 }
 
- /* --------------- Q5: need fix on get fname + line disparity --------------- */
-void helper_mismatched_lines(ifstream& f1, ifstream& f2){
+ /* --------------- Q5: need fix line disparity --------------- */
+
+//  Helper
+void helper_mismatched_lines(ifstream& f1, ifstream& f2, string file1, string file2){
     string line1;
     string line2;
+
+    // Parsing filename to proper format
+    string filename1 = file1.substr(file1.find_last_of("/\\") + 1);
+    string filename2 = file2.substr(file2.find_last_of("/\\") + 1);
     
-
-
     if(getline(f1,line1) && getline(f2,line2)){
-        // size_t hashed1 = hash_it(line1);
-        // size_t hashed2 = hash_it(line2);
+
 
         if(!hashed_word_diff(line1,line2)){
-            cout << "file1.txt: " << line1 << endl;
-            cout << "file2.txt: " << line2 << endl;
+            cout << filename1 << ": " << line1 << endl;
+            cout << filename2 << ": " << line2 << endl;
         }
 
+        helper_mismatched_lines(f1,f2,file1,file2);
         
-    }else return;
-
-    helper_mismatched_lines(f1, f2);
-
-
+    }
 
 
 }
+
+
 void list_mismatched_lines(string file1, string file2){
     if (enhanced_file_diff(file1,file2)) return;
 
@@ -93,7 +95,8 @@ void list_mismatched_lines(string file1, string file2){
     ifstream f2(file2);
     
 
-    helper_mismatched_lines(f1,f2);
+    helper_mismatched_lines(f1,f2,file1,file2);
+    
 }
 
 
@@ -104,9 +107,8 @@ void list_mismatched_lines(string file1, string file2){
 
     string line1, line2;
 
-    string word1;
-    string word2;
-
+    string word1,word2;
+    
     // Parsing filename to proper format
     string filename1 = file1.substr(file1.find_last_of("/\\") + 1);
     string filename2 = file2.substr(file2.find_last_of("/\\") + 1);

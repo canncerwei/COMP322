@@ -62,7 +62,7 @@ bool enhanced_file_diff(string file1, string file2){
     return true;
 }
 
- /* --------------- Q5: need fix line disparity --------------- */
+ /* --------------- Q5 --------------- */
 
 //  Recursive Helper
 void helper_mismatched_lines(ifstream &f1, ifstream &f2, string file1, string file2){
@@ -73,7 +73,8 @@ void helper_mismatched_lines(ifstream &f1, ifstream &f2, string file1, string fi
     string filename1 = file1.substr(file1.find_last_of("/\\") + 1);
     string filename2 = file2.substr(file2.find_last_of("/\\") + 1);
     
-    if(getline(f1,line1) && getline(f2,line2)){
+    //Need to add both order for the line disparity edge case, must getline() the non empty file
+    if((getline(f1,line1) && getline(f2,line2)) || (getline(f2,line2)&& getline(f1,line1)) ){
 
 
         if(!hashed_word_diff(line1,line2)){
@@ -89,12 +90,12 @@ void helper_mismatched_lines(ifstream &f1, ifstream &f2, string file1, string fi
             
             cout << filename1 << ": " << line1 << endl;
             cout << filename2 << ": " << endl;
-            
+            helper_mismatched_lines(f1,f2,file1,file2);
         } else if (!line2.empty()) {
             
             cout << filename1 << ": " << endl;
             cout << filename2 << ": " << line2 << endl;
-            
+            helper_mismatched_lines(f1,f2,file1,file2);
         }
     }
 

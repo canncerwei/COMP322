@@ -62,7 +62,7 @@ bool enhanced_file_diff(string file1, string file2){
     return true;
 }
 
- /* --------------- Q5 --------------- */
+ /* --------------- Q5  --------------- */
 
 //  Recursive Helper
 void helper_mismatched_lines(ifstream &f1, ifstream &f2, string file1, string file2){
@@ -129,7 +129,7 @@ void helper_mismatched_words(ifstream& f1, ifstream& f2, int linenum, string fil
     string filename1 = file1.substr(file1.find_last_of("/\\") + 1);
     string filename2 = file2.substr(file2.find_last_of("/\\") + 1);
     
-    if(getline(f1,line1) && getline(f2,line2)){
+    if((getline(f1,line1) && getline(f2,line2)) || (getline(f2,line2)&& getline(f1,line1))){
 
         istringstream iss1(line1), iss2(line2);
         while (iss1 >> word1 && iss2 >> word2){
@@ -141,6 +141,24 @@ void helper_mismatched_words(ifstream& f1, ifstream& f2, int linenum, string fil
 
         helper_mismatched_words(f1,f2,linenum+1,file1,file2);
         
+    }
+    else if (!line1.empty() || !line2.empty()){
+        if (!line1.empty()) {
+            istringstream iss1(line1);
+            while (iss1 >> word1){
+                cout << filename1 << ": " << word1 << " (line " << linenum << ")" << endl;
+                cout << filename2 << ": " << "''" << " (line " << linenum << ")" << endl;
+            }
+
+            helper_mismatched_words(f1,f2,linenum+1,file1,file2);
+        } else if (!line2.empty()) {
+            istringstream iss2(line2);
+            while (iss2 >> word2){
+                cout << filename1 << ": " << "''" << " (line " << linenum << ")" << endl;
+                cout << filename2 << ": " << word2 << " (line " << linenum << ")" << endl;
+            }
+            helper_mismatched_words(f1,f2,linenum+1,file1,file2);
+        }
     }
 
 }

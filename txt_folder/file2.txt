@@ -1,2 +1,4 @@
 My dear C++ class.
 I hope that you like this assignment.
+Testing line disparity.
+Adding another line test.

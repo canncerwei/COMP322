@@ -175,7 +175,31 @@ void helper_mismatched_words(ifstream& f1, ifstream& f2, int linenum, string fil
 /* -------------------------------------------------------------------------- */
 int main(int argc, char const *argv[])
 {
-    /* code */
+
+    
+    // Given main function, but contains a lot of errors, so I have commented it out
+    // // Q1
+    // std::string str1 = "Hello World";
+    // std::string str2 = "hEllO World";
+    // std::string str3 = "World";
+    // std::string str4 = "Hello World";
+    // bool result = word_diff(str1, str2); // False
+    // result = word_diff(str1, str3); // False
+    // result = word_diff(str1, str4); // True
+    // // Q2
+    // std::string file1 = "./txt_folder/file1.txt";
+    // std::string file2 = "./txt_folder/file2.txt";
+    // result = classical_file_diff(file1, file2); // False
+    // // Q3
+    // std::string mystr = "I love this assignment";
+    // std::size_t h1 = hash_it (mystr);
+    // std::cout << h1 << std::endl;
+    // // Q4
+    // result = enhanced_file_diff(file1, file2); // False
+    // // Q5
+    // list_mismatched_lines(file1, file2); // This should print to the screen the mismatched lines
+    // // Q6
+    // list_mismatched_words(file1, file2); // This should print to the screen the mismatched words 
 
     // Q1
     std::string str1 = "Hello World";

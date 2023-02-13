@@ -23,11 +23,14 @@ bool word_diff(string word1, string word2){
 
 /* ----------------------------------- Q2 ----------------------------------- */
 bool classical_file_diff(string file1, string file2){
+    // open file
     ifstream f1(file1);
     ifstream f2(file2);
+
     string word1;
     string word2;
 
+    // checking line by line
     while (f1 >> word1 && f2 >> word2) {
         if (!word_diff(word1, word2)) return false;
     }
@@ -49,12 +52,16 @@ bool hashed_word_diff(string word1, string word2){
 
     return (hashed1 == hashed2);
 }
+
 bool enhanced_file_diff(string file1, string file2){
+    // open file
     ifstream f1(file1);
     ifstream f2(file2);
+
     string word1;
     string word2;
 
+    // check line by line using hashing
     while (f1 >> word1 && f2 >> word2) {
         if (!hashed_word_diff(word1,word2)) return false;
     }
@@ -73,6 +80,7 @@ void helper_mismatched_lines(ifstream &f1, ifstream &f2, string file1, string fi
     string filename1 = file1.substr(file1.find_last_of("/\\") + 1);
     string filename2 = file2.substr(file2.find_last_of("/\\") + 1);
     
+    // checking line by line 
     //Need to add both order for the line disparity edge case, must getline() the non empty file
     if((getline(f1,line1) && getline(f2,line2)) || (getline(f2,line2)&& getline(f1,line1)) ){
 
@@ -110,7 +118,7 @@ void list_mismatched_lines(string file1, string file2){
     ifstream f1(file1);
     ifstream f2(file2);
     
-    // call helper
+    // call recusive helper
     helper_mismatched_lines(f1,f2,file1,file2);
     
 }
@@ -122,13 +130,13 @@ void list_mismatched_lines(string file1, string file2){
 void helper_mismatched_words(ifstream& f1, ifstream& f2, int linenum, string file1, string file2){
     string line1,line2;
     
-
     string word1,word2;
 
     // Parsing filename to proper format
     string filename1 = file1.substr(file1.find_last_of("/\\") + 1);
     string filename2 = file2.substr(file2.find_last_of("/\\") + 1);
     
+    // checking line by line, and check for empty line for edge case
     if((getline(f1,line1) && getline(f2,line2)) || (getline(f2,line2)&& getline(f1,line1))){
 
         istringstream iss1(line1), iss2(line2);
@@ -142,6 +150,7 @@ void helper_mismatched_words(ifstream& f1, ifstream& f2, int linenum, string fil
         helper_mismatched_words(f1,f2,linenum+1,file1,file2);
         
     }
+    // edge case, line disparity
     else if (!line1.empty() || !line2.empty()){
         if (!line1.empty()) {
             istringstream iss1(line1);
@@ -163,9 +172,11 @@ void helper_mismatched_words(ifstream& f1, ifstream& f2, int linenum, string fil
 
 }
  void list_mismatched_words(std::string file1, std::string file2){
+    // open file
     ifstream f1(file1);
     ifstream f2(file2);
 
+    // call helper
     helper_mismatched_words(f1,f2,1,file1,file2);
  }   
 
@@ -201,6 +212,8 @@ int main(int argc, char const *argv[])
     // // Q6
     // list_mismatched_words(file1, file2); // This should print to the screen the mismatched words 
 
+    //CUSTOM MAIN FUNCTION
+    
     // Q1
     std::string str1 = "Hello World";
     std::string str2 = "hEllO World";

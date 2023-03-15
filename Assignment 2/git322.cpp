@@ -10,7 +10,7 @@ using namespace std;
 
 // function prototypes
 void add(string content);
-void removeVersion(int versionNumber);
+void remove(int versionNumber);
 void load(int versionNumber);
 void print();
 void compare(int versionNumber1, int versionNumber2);
@@ -106,6 +106,53 @@ void print(){
     }
 }
 
+// HELPER: get the pointer to a desired version
+Version* getVersion(int versionNumber){
+    // Traverse the linked list to find the specified version
+    Version* currentVersion = versionsList.head;
+    while (currentVersion != nullptr && currentVersion->versionNumber != versionNumber) {
+        currentVersion = currentVersion->next;
+    }
+
+    if (currentVersion == nullptr) {
+        cout << "Error: version " << versionNumber << " not found." << endl;
+    }
+
+    return currentVersion;
+}
+
+void load(int versionNumber) {
+    if (versionNumber < 1 || versionNumber > version_Number) {
+        cout << "Please enter a valid version number. If you are not sure please press 'p' to list all valid version numbers." << endl;
+        return;
+    }
+
+    // Traverse the linked list to find the specified version
+    Version* currentVersion = getVersion(versionNumber);
+    
+    // Load the content of the specified version
+    string content = currentVersion->content;
+
+    // Overwrite the content of the current file with the loaded content
+    ofstream myfile("file.txt");
+    if (myfile.is_open()) {
+        myfile << content;
+        myfile.close();
+        cout << "Version " << versionNumber << " loaded successfully. Please refresh your text editor to see the changes." << endl;
+    } else {
+        cout << "Error: could not open file.txt" << endl;
+    }
+}
+
+void compare(int version1, int version2){
+    Version* versionNumber1 = getVersion(version1);
+    Version* versionNumber2 = getVersion(version2);
+
+    return;
+}
+
+
+
 // main function
 int main() {
     // initialization
@@ -140,6 +187,25 @@ int main() {
             case 'e': {
                 cout << "Exiting. Good bye!" << endl;
                 return 0;
+            }
+
+            case 'l':{
+                int version;
+                cout << "Which version would you like to load?" << endl;
+                cin >> version;
+                load(version);
+                break;
+            }
+
+            case 'c':{
+                int version1;
+                int version2;
+                cout << "Please enter the number of the first version to compare:";
+                cin >> version1;
+                cout << "Please enter the number of the second version to compare:";
+                cin >> version2;
+                // void compare(version1, version2);
+                break;
             }
             // case 'r': {
             //     if (versionsList.size == 0) {
